@@ -49,7 +49,7 @@ transaction = Transaction(operations=[
 <br />
 transaction.open_transaction()
 
-##### сделать коммит (коммитятся все вложенные транзакции).
+##### сделать коммит (коммитятся все вложенные операции).
 transaction.commit()
 <br />
 
