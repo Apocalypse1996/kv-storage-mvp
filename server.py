@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, abort
 
-from db import DBManager, DBManagerReadonlyException
+from db import DBManager, TransactionLockedException
 
 app = Flask(__name__)
 
@@ -34,7 +34,7 @@ def Edit():
     try:
         transaction = db_manager.bulk_create_or_update(data)
         return jsonify(transaction.__repr__())
-    except DBManagerReadonlyException:
+    except TransactionLockedException:
         return abort(423)
 
 
@@ -51,7 +51,7 @@ def Delete():
     try:
         transaction = db_manager.bulk_delete(data)
         return jsonify(transaction.__repr__())
-    except DBManagerReadonlyException:
+    except TransactionLockedException:
         return abort(423)
 
 
