@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: ../
+      dockerfile: ./devops/Dockerfile
+    image: app:latest
+    container_name: kv-app
+    volumes:
+      - ../db_static:/app/db_static
+    ports:
+      - 1337:8080
