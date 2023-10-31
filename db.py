@@ -105,7 +105,6 @@ class TransactionOperation(BaseModel):
 
     def modify_data(self, data):
         """Модифицируем данные базы без сохранения"""
-
         self.old_value = data['Data'].get(self.key)
         if self.is_edit:
             data['Data'][self.key] = self.value
@@ -140,12 +139,12 @@ class Transaction(BaseModel):
     def open_transaction(self):
         """Открываем транзакцию"""
 
+        if self.connection:
+            return self.connection
+
         if self._transactions_is_locked():
             raise TransactionLockedException()
         self._lock_transactions()
-
-        if self.connection:
-            return self.connection
 
         try:
             self.connection = DBManager.open_db()
