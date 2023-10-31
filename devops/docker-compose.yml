@@ -10,4 +10,4 @@ services:
     volumes:
       - ../db_static:/app/db_static
     ports:
-      - 1337:8080
+      - 8080:8080

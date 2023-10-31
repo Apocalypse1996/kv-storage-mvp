@@ -137,7 +137,7 @@ class Transaction(BaseModel):
     operations: List[TransactionOperation]
     connection: TextIO = None
 
-    def _open_transaction(self):
+    def open_transaction(self):
         """Открываем транзакцию"""
 
         if self._transactions_is_locked():
@@ -153,7 +153,7 @@ class Transaction(BaseModel):
             self._unlock_transactions()
             raise
 
-    def _close_transaction(self):
+    def close_transaction(self):
         """Зкарываем транзакцию"""
 
         self.connection.close()
@@ -178,7 +178,7 @@ class Transaction(BaseModel):
     def commit(self):
         """Пункт: сделать коммит (коммитятся все вложенные операции)."""
 
-        self._open_transaction()
+        self.open_transaction()
 
         try:
             data = DBManager.read_db(self.connection)
@@ -193,14 +193,14 @@ class Transaction(BaseModel):
         except Exception:
             raise
         finally:
-            self._close_transaction()
+            self.close_transaction()
 
         return self
 
     def rollback(self):
         """Откатываем транзакцию"""
 
-        self._open_transaction()
+        self.open_transaction()
 
         try:
             data = DBManager.read_db(self.connection)
@@ -217,7 +217,7 @@ class Transaction(BaseModel):
         except Exception:
             raise
         finally:
-            self._close_transaction()
+            self.close_transaction()
 
         return self
 
